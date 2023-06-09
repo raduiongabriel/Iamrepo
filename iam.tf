@@ -16,11 +16,7 @@ terraform {
     }
 }
 }
-provider "google-beta" {
-  project     = var.project_id
-  credentials = file(var.credentials_file)
-}
-
+#############################VARIABILE #################################
 variable "project_id" {
   description = "ID-ul proiectului"
   type        = string
@@ -43,6 +39,14 @@ variable "user_email" {
 variable "service_account_email" {
   description = "Adresa de email a contului de serviciu"
 }
+#############################VARIABILE #################################
+
+provider "google-beta" {
+  project     = var.project_id
+  credentials = var.credentials_file
+}
+
+
 
 # Definirea politicii IAM pentru un grup
 data "google_iam_policy" "group_policy" {
