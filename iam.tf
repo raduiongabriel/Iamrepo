@@ -25,7 +25,7 @@ variable "project_id" {
 variable "credentials_file" {
   description = "Calea către fișierul de credențiale"
   type        = string
-  default     = "/home/kali/Disertatie/Disertatie/forterraform.json"
+  default     = "./forterraform.json"
 }
 
 variable "group_email" {
