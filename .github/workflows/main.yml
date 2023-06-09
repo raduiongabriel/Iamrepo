@@ -1,0 +1,42 @@
+name: IAM Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      role_name:
+        description: Numele rolului
+        required: true
+        default: ''
+      permissions:
+        description: Permisiuni
+        required: true
+        default: ''
+      members:
+        description: Membri
+        required: true
+        default: ''
+
+jobs:
+  update-iam-roles:
+    name: Update IAM Roles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          export_default_credentials: true
+
+      - name: Configure Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var="role_name=${{ inputs.role_name }}" -var="permissions=${{ inputs.permissions }}" -var="members=${{ inputs.members }}"
