@@ -30,15 +30,22 @@ variable "credentials_file" {
 
 variable "group_email" {
   description = "Adresa de email a grupului"
+  type        = string
+  default     = "null"
 }
 
 variable "user_email" {
   description = "Adresa de email a utilizatorului"
+  type        = string
+  default     = "null"
 }
 
 variable "service_account_email" {
   description = "Adresa de email a contului de serviciu"
+  type        = string
+  default     = "null"
 }
+
 #############################VARIABILE #################################
 
 provider "google-beta" {
