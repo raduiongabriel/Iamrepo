@@ -16,6 +16,10 @@ terraform {
     }
 }
 }
+provider "google-beta" {
+  project     = var.project_id
+  credentials = file(var.credentials_file)
+}
 
 variable "project_id" {
   description = "ID-ul proiectului"
