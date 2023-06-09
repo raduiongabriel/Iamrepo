@@ -1,0 +1,18 @@
+<h2>IAM</h2>
+<form id="workflowForm" method="POST" action="/">
+    <input type="hidden" name="repository_name" value="Iamrepo">
+    <label for="group_email">Email grup:</label><br>
+    <input type="text" id="group_email" name="group_email"><br><br>
+    <label for="user_email">Email utilizator:</label><br>
+    <input type="text" id="user_email" name="user_email"><br><br>
+    <label for="service_account_email">Email cont serviciu:</label><br>
+    <input type="text" id="service_account_email" name="service_account_email"><br><br>
+    <input type="button" value="Aplică politica IAM" onclick="runWorkflow('workflowForm')">
+</form>
+<form id="applyForm" method="POST" action="/" enctype="multipart/form-data">
+    <input type="hidden" name="repository_name" value="Iamrepo">
+    <input type="hidden" name="apply_iam_file" value="true">
+    <label for="iam_file">Fișier IAM:</label><br>
+    <input type="file" id="iam_file" name="iam_file"><br><br>
+    <input type="button" value="Aplică fișierul iam.tf" onclick="runWorkflow('applyForm')">
+</form>
