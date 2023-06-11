@@ -62,7 +62,7 @@ jobs:
             -var="service_account_role=${{ github.event.inputs.service_account_role }}" \
             -var="key_created_date=${{ github.event.inputs.key_created_date }}"
 
-        - name: Read service account key created time
+      - name: Read service account key created time
         id: read-key-created-time
         run: echo "::set-output name=key_created_time::$(terraform output -raw service_account_key_created_time)"
 
