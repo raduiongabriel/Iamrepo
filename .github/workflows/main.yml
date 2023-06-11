@@ -2,26 +2,21 @@ name: IAM Workflow
 on:
   workflow_dispatch:
     inputs:
-      user_email:
-        description: 'Adresa de email a utilizatorului'
+      service_account_id:
+        description: 'Service Account ID'
         required: true
         default: ''
-      user_role:
-        description: 'Rolul utilizatorului'
+      service_account_display_name:
+        description: 'Service Account Display Name'
         required: true
         default: ''
-      service_account_email:
-        description: 'Adresa de email a contului de serviciu'
-        required: true
-        default: ''
-      service_role:
-        description: 'Service role'
+      service_account_role:
+        description: 'Service Account Role'
         required: true
         default: ''
 
 jobs:
-  update-iam-roles:
-    name: Update IAM Roles
+  iam:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -41,13 +36,12 @@ jobs:
 
       - name: Read input variables
         run: |
-          echo "user_email: ${{ inputs.user_email }}"
-          echo "user_role: ${{ inputs.user_role }}"
-          echo "service_account_email: ${{ inputs.service_account_email }}"
-          echo "service_role: ${{ inputs.service_role }}"
+          echo "service_account_id: ${{ inputs.service_account_id }}"
+          echo "service_account_display_name: ${{ inputs.service_account_display_name }}"
+          echo "service_account_role: ${{ inputs.service_account_role }}"
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="user_email=${{ inputs.user_email }}" -var="user_role=${{ inputs.user_role }}" -var="service_account_email=${{ inputs.service_account_email }}" -var="service_role=${{ inputs.service_role }}"
+        run: terraform apply -auto-approve -var="service_account_id=${{ inputs.service_account_id }}" -var="service_account_display_name=${{ inputs.service_account_display_name }}" -var="service_account_role=${{ inputs.service_account_role }}"

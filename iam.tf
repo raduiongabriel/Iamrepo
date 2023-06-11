@@ -1,87 +1,57 @@
+# Definirea furnizorului Google
 terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
       version = "4.68.0"
     }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "4.68.0"
-    }
-
-    random = {
-      source  = "hashicorp/random"
-      version = "3.5.1"
-    }
   }
 }
 
-#############################VARIABILE #################################
+# Variabilele de intrare
 variable "project_id" {
   description = "ID-ul proiectului"
   type        = string
   default     = "terraform-386709"
 }
 
+variable "service_account_id" {
+  description = "ID-ul contului de serviciu"
+  type        = string
+  default     = "my-service-account"
+}
+
+variable "service_account_display_name" {
+  description = "Numele de afișare al contului de serviciu"
+  type        = string
+  default     = "My Service Account"
+}
+
+variable "service_account_role" {
+  description = "Rolul pentru contul de serviciu"
+  type        = string
+  default     = "roles/editor"
+}
 variable "credentials_file" {
   description = "Calea către fișierul de credențiale"
   type        = string
   default     = "./forterraform.json"
 }
 
-variable "service_role" {
-  description = "The role for the service account"
-  type        = string
-  default     = "roles/storage.objectAdmin"
-}
-
-
-variable "group_email" {
-  description = "Adresa de email a grupului"
-  type        = string
-  default     = "null"
-}
-
-variable "user_email" {
-  description = "Adresa de email a utilizatorului"
-  type        = string
-  default     = "null"
-}
-variable "user_role" {
-  description = "Rolul utilizatorului"
-  type        = string
-  default     = "null"
-}
-
-variable "service_account_email" {
-  description = "Adresa de email a contului de serviciu"
-  type        = string
-  default     = "null"
-}
-#############################VARIABILE #################################
-
 provider "google" {
   project     = var.project_id
   credentials = var.credentials_file
 }
 
-# Definirea politicii IAM pentru un utilizator
-resource "google_project_iam_binding" "user_policy" {
-  project = var.project_id
-  role    = var.user_role
-
-  members = [
-    "user:${var.user_email}",
-  ]
+# Crearea serviciului
+resource "google_service_account" "service_account" {
+  account_id   = var.service_account_id
+  display_name = var.service_account_display_name
 }
 
-# Definirea politicii IAM pentru un serviciu
-resource "google_project_iam_binding" "service_policy" {
+# Atribuirea rolului pentru serviciu
+resource "google_project_iam_member" "service_account_role" {
   project = var.project_id
-  role    = var.service_role
-
-  members = [
-    "serviceAccount:${var.service_account_email}",
-  ]
+  role    = var.service_account_role
+  member  = "serviceAccount:${google_service_account.service_account.email}"
 }
-
