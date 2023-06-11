@@ -3,10 +3,6 @@ name: IAM Workflow
 on:
   workflow_dispatch:
     inputs:
-      project_id:
-        description: 'Project ID'
-        required: true
-        default: ''
       service_account_id:
         description: 'Service Account ID'
         required: true
@@ -40,7 +36,6 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
 
       - name: Configure Terraform
@@ -50,7 +45,6 @@ jobs:
 
       - name: Read input variables
         run: |
-          echo "project_id: ${{ github.event.inputs.project_id }}"
           echo "service_account_id: ${{ github.event.inputs.service_account_id }}"
           echo "service_account_display_name: ${{ github.event.inputs.service_account_display_name }}"
           echo "service_account_role: ${{ github.event.inputs.service_account_role }}"
@@ -63,7 +57,6 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
-            -var="project_id=${{ github.event.inputs.project_id }}" \
             -var="service_account_id=${{ github.event.inputs.service_account_id }}" \
             -var="service_account_display_name=${{ github.event.inputs.service_account_display_name }}" \
             -var="service_account_role=${{ github.event.inputs.service_account_role }}" \

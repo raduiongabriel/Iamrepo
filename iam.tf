@@ -32,6 +32,7 @@ variable "service_account_role" {
   type        = string
   default     = "roles/editor"
 }
+
 variable "credentials_file" {
   description = "Calea către fișierul de credențiale"
   type        = string
@@ -54,4 +55,14 @@ resource "google_project_iam_member" "service_account_role" {
   project = var.project_id
   role    = var.service_account_role
   member  = "serviceAccount:${google_service_account.service_account.email}"
+}
+
+# Crearea cheii pentru serviciul de cont
+resource "google_service_account_key" "service_account_key" {
+  service_account_id = google_service_account.service_account.id
+}
+
+# Data creării cheii
+output "service_account_key_created_time" {
+  value = google_service_account_key.service_account_key.valid_after_time
 }
