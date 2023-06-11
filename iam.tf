@@ -47,6 +47,11 @@ variable "user_email" {
   type        = string
   default     = "null"
 }
+variable "user_role" {
+  description = "Rolul utilizatorului"
+  type        = string
+  default     = "null"
+}
 
 variable "service_account_email" {
   description = "Adresa de email a contului de serviciu"
@@ -58,16 +63,6 @@ variable "service_account_email" {
 provider "google" {
   project     = var.project_id
   credentials = var.credentials_file
-}
-
-# Definirea politicii IAM pentru un grup
-resource "google_project_iam_binding" "group_policy" {
-  project = var.project_id
-  role    = "roles/editor"
-
-  members = [
-    "group:${var.group_email}",
-  ]
 }
 
 # Definirea politicii IAM pentru un utilizator
