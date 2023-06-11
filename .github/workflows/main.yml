@@ -22,7 +22,7 @@ on:
       key_created_date:
         description: 'Key Created Date'
         required: false
-        default: ${{ github.event.inputs.key_created_date }}
+        default: 'false'
 
 jobs:
   update-iam-roles:
