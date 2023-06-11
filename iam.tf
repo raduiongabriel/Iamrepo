@@ -29,6 +29,13 @@ variable "credentials_file" {
   default     = "./forterraform.json"
 }
 
+variable "service_role" {
+  description = "The role for the service account"
+  type        = string
+  default     = "roles/storage.objectAdmin"
+}
+
+
 variable "group_email" {
   description = "Adresa de email a grupului"
   type        = string
@@ -50,9 +57,8 @@ variable "service_account_email" {
 
 provider "google" {
   project     = var.project_id
-  credentials = file(var.credentials_file)
+  credentials = var.credentials_file
 }
-
 
 # Definirea politicii IAM pentru un grup
 resource "google_project_iam_binding" "group_policy" {
@@ -67,7 +73,7 @@ resource "google_project_iam_binding" "group_policy" {
 # Definirea politicii IAM pentru un utilizator
 resource "google_project_iam_binding" "user_policy" {
   project = var.project_id
-  role    = "roles/compute.instanceAdmin"
+  role    = var.user_role
 
   members = [
     "user:${var.user_email}",
@@ -77,9 +83,10 @@ resource "google_project_iam_binding" "user_policy" {
 # Definirea politicii IAM pentru un serviciu
 resource "google_project_iam_binding" "service_policy" {
   project = var.project_id
-  role    = "roles/storage.objectAdmin"
+  role    = var.service_role
 
   members = [
     "serviceAccount:${var.service_account_email}",
   ]
 }
+

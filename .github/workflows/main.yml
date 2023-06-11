@@ -2,16 +2,20 @@ name: IAM Workflow
 on:
   workflow_dispatch:
     inputs:
-      group_email:
-        description: 'Adresa de email a grupului'
-        required: true
-        default: ''
       user_email:
         description: 'Adresa de email a utilizatorului'
         required: true
         default: ''
+      user_role:
+        description: 'Rolul utilizatorului'
+        required: true
+        default: ''
       service_account_email:
         description: 'Adresa de email a contului de serviciu'
+        required: true
+        default: ''
+      service_role:
+        description: 'Service role'
         required: true
         default: ''
 
@@ -37,12 +41,13 @@ jobs:
 
       - name: Read input variables
         run: |
-          echo "group_email: ${{ inputs.group_email }}"
           echo "user_email: ${{ inputs.user_email }}"
+          echo "user_role: ${{ inputs.user_role }}"
           echo "service_account_email: ${{ inputs.service_account_email }}"
+          echo "service_role: ${{ inputs.service_role }}"
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="group_email=${{ inputs.group_email }}" -var="user_email=${{ inputs.user_email }}" -var="service_account_email=${{ inputs.service_account_email }}"
+        run: terraform apply -auto-approve -var="user_email=${{ inputs.user_email }}" -var="user_role=${{ inputs.user_role }}" -var="service_account_email=${{ inputs.service_account_email }}" -var="service_role=${{ inputs.service_role }}"
