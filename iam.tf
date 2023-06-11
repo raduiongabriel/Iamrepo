@@ -69,5 +69,7 @@ resource "google_service_account_key" "service_account_key" {
 
 # Data creării cheii
 output "service_account_key_created_time" {
-  value = google_service_account_key.service_account_key.valid_after_time
+  description = "Service Account Key Created Time"
+  value       = google_service_account_key.service_account_key.valid_after
 }
+
