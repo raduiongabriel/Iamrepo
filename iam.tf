@@ -38,6 +38,11 @@ variable "credentials_file" {
   type        = string
   default     = "./forterraform.json"
 }
+variable "key_created_date" {
+  description = "Key Created Date"
+  type        = string
+}
+
 
 provider "google" {
   project     = var.project_id
