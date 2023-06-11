@@ -1,4 +1,5 @@
 name: IAM Workflow
+
 on:
   workflow_dispatch:
     inputs:
@@ -25,7 +26,7 @@ on:
       key_created_date:
         description: 'Key Created Date'
         required: false
-        default: ${{ strftime('%Y-%m-%d', github.event.created_at) }}
+        default: ${{ github.event.inputs.key_created_date }}
 
 jobs:
   update-iam-roles:
@@ -49,12 +50,12 @@ jobs:
 
       - name: Read input variables
         run: |
-          echo "project_id: ${{ inputs.project_id }}"
-          echo "service_account_id: ${{ inputs.service_account_id }}"
-          echo "service_account_display_name: ${{ inputs.service_account_display_name }}"
-          echo "service_account_role: ${{ inputs.service_account_role }}"
-          echo "create_key: ${{ inputs.create_key }}"
-          echo "key_created_date: ${{ inputs.key_created_date }}"
+          echo "project_id: ${{ github.event.inputs.project_id }}"
+          echo "service_account_id: ${{ github.event.inputs.service_account_id }}"
+          echo "service_account_display_name: ${{ github.event.inputs.service_account_display_name }}"
+          echo "service_account_role: ${{ github.event.inputs.service_account_role }}"
+          echo "create_key: ${{ github.event.inputs.create_key }}"
+          echo "key_created_date: ${{ github.event.inputs.key_created_date }}"
 
       - name: Terraform Init
         run: terraform init
@@ -62,17 +63,17 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
-            -var="project_id=${{ inputs.project_id }}" \
-            -var="service_account_id=${{ inputs.service_account_id }}" \
-            -var="service_account_display_name=${{ inputs.service_account_display_name }}" \
-            -var="service_account_role=${{ inputs.service_account_role }}" \
-            -var="key_created_date=${{ inputs.key_created_date }}"
+            -var="project_id=${{ github.event.inputs.project_id }}" \
+            -var="service_account_id=${{ github.event.inputs.service_account_id }}" \
+            -var="service_account_display_name=${{ github.event.inputs.service_account_display_name }}" \
+            -var="service_account_role=${{ github.event.inputs.service_account_role }}" \
+            -var="key_created_date=${{ github.event.inputs.key_created_date }}"
 
       - name: Create Service Account Key
         run: |
-          if [[ "${{ inputs.create_key }}" == "true" ]]; then
+          if [[ "${{ github.event.inputs.create_key }}" == "true" ]]; then
             gcloud iam service-accounts keys create \
-              --iam-account="${{ inputs.service_account_id }}" \
+              --iam-account="${{ github.event.inputs.service_account_id }}" \
               --key-file-type=json \
-              --key-file="${{ inputs.key_created_date }}.json"
+              --key-file="${{ github.event.inputs.key_created_date }}.json"
           fi
