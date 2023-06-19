@@ -19,10 +19,6 @@ on:
         description: 'Create Service Account Key'
         required: true
         default: 'true'
-      key_created_date:
-        description: 'Key Created Date'
-        required: true
-        default: 'true'
 
 jobs:
   update-iam-roles:
@@ -49,7 +45,6 @@ jobs:
           echo "service_account_display_name: ${{ github.event.inputs.service_account_display_name }}"
           echo "service_account_role: ${{ github.event.inputs.service_account_role }}"
           echo "create_key: ${{ github.event.inputs.create_key }}"
-          echo "key_created_date: ${{ github.event.inputs.key_created_date }}"
 
       - name: Terraform Init
         run: terraform init
@@ -60,7 +55,7 @@ jobs:
             -var="service_account_id=${{ github.event.inputs.service_account_id }}" \
             -var="service_account_display_name=${{ github.event.inputs.service_account_display_name }}" \
             -var="service_account_role=${{ github.event.inputs.service_account_role }}" \
-            -var="key_created_date=${{ github.event.inputs.key_created_date }}"
+            -var="create_key=${{ github.event.inputs.create_key }}"
 
       - name: Read service account key created time
         id: read-key-created-time
@@ -71,6 +66,5 @@ jobs:
           if [[ "${{ github.event.inputs.create_key }}" == "true" ]]; then
             gcloud iam service-accounts keys create \
               --iam-account="${{ github.event.inputs.service_account_id }}" \
-              --key-file-type=json \
-              --key-file="${{ github.event.inputs.key_created_date }}.json"
+              --key-file-type=json
           fi
