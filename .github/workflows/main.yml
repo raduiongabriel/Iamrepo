@@ -17,8 +17,8 @@ on:
         default: ''
       create_key:
         description: 'Create Service Account Key'
-        required: false
-        default: 'false'
+        required: true
+        default: ''
       key_created_date:
         description: 'Key Created Date'
         required: true
