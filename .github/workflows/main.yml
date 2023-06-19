@@ -17,8 +17,8 @@ on:
         default: ''
       create_key:
         description: 'Create Service Account Key'
-        required: true
-        default: 'true'
+        required: false
+        default: 'false'
 
 jobs:
   update-iam-roles:
