@@ -17,12 +17,12 @@ on:
         default: ''
       create_key:
         description: 'Create Service Account Key'
-        required: false
-        default: 'false'
+        required: true
+        default: 'true'
       key_created_date:
         description: 'Key Created Date'
-        required: false
-        default: 'false'
+        required: true
+        default: 'true'
 
 jobs:
   update-iam-roles:
