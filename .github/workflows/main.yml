@@ -17,11 +17,11 @@ on:
         default: ''
       create_key:
         description: 'Create Service Account Key'
-        required: true
+        required: false
         default: ''
       key_created_date:
         description: 'Key Created Date'
-        required: true
+        required: false
         default: ''
 
 jobs:
