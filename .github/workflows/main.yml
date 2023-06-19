@@ -57,10 +57,6 @@ jobs:
             -var="service_account_role=${{ github.event.inputs.service_account_role }}" \
             -var="create_key=${{ github.event.inputs.create_key }}"
 
-      - name: Read service account key created time
-        id: read-key-created-time
-        run: echo "::set-output name=key_created_time::$(terraform output -raw service_account_key_created_time)"
-
       - name: Create Service Account Key
         run: |
           if [[ "${{ github.event.inputs.create_key }}" == "true" ]]; then
