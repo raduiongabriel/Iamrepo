@@ -21,8 +21,8 @@ on:
         default: 'false'
       key_created_date:
         description: 'Key Created Date'
-        required: false
-        default: 'false'
+        required: true
+        default: ''
 
 jobs:
   update-iam-roles:
